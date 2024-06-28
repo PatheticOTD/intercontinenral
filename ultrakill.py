@@ -1,38 +1,40 @@
-def romanToInt(s):
-    """
-    :type s: str
-    :rtype: int
-    """
-    roman_dick = {'I':1, 'V':5, 'X':10, 'L':50, 'C':100, 'D':500, 'M':1000}
-    ans = 0
-    i = 0
-    n = len(s)
-    while i < n - 1:
-        if (s[i] == 'I') and (s[i+1] in 'VX'):
-            ans += roman_dick[s[i+1]] - 1
-            i+=2
-            if i == (n-1):
-                ans += roman_dick[s[i]]
-                
-        elif (s[i] == 'X') and (s[i+1] in 'LC'):
-            ans += roman_dick[s[i+1]] - 10
-            i+=2
-            if i == (n-1):
-                ans += roman_dick[s[i]]
-        elif (s[i] == 'C') and (s[i+1] in 'DM'):
-            ans += roman_dick[s[i+1]] - 100
-            i+=2
-            if i == (n-1):
-                ans += roman_dick[s[i]]
-        else:
-            ans+= roman_dick[s[i]]
-            i+=1
-            if (i + 1) == n:
-                ans += roman_dick[s[i]]
-                break
-                
-            
-    return ans
+import random
+class RandomizedSet(object):
 
-string = 'MDCXCV'
-print(romanToInt(string))
+    def __init__(self):
+        self.hashmap = {}
+        self.list_of_vals = []
+
+    def insert(self, val):
+        statement = val not in self.hashmap
+        if statement:
+            self.hashmap[val] = len(self.list_of_vals)
+            self.list_of_vals.append(val)
+        return statement
+
+        
+    def remove(self, val):
+        statement = val in self.hashmap
+        if statement:
+            self.hashmap[self.list_of_vals[-1]] = self.hashmap[val]
+            del self.hashmap[val]
+
+            self.list_of_vals[self.hashmap[self.list_of_vals[-1]]] = self.list_of_vals[-1]
+            self.list_of_vals.pop(-1)
+            
+
+        return statement
+
+    def getRandom(self):
+        return self.list_of_vals[random.randint(0, len(self.list_of_vals)-1)]
+
+if __name__ == '__main__':
+    rset = RandomizedSet()
+    print(rset.insert(1))
+    print(rset.insert(2))
+    print(rset.insert(3))
+    print(rset.insert(5))
+    print(rset.insert(7))
+    print(rset.insert(0))
+    print(rset.remove(1))
+    print(rset.getRandom())
